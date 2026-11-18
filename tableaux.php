@@ -1,428 +1,382 @@
 <?php
 declare(strict_types=1);
 
-$notes = [12, 15, 8, 17, 9, 14, 11];
+echo "stagiaire\n";
 
-$prenoms = ['Sara', 'Youssef', 'Imane', 'Omar', 'Khadija'];
+$stagiaire = ['nom' => 'Alami', 'prenom' => 'Sara', 'age' => 21, 'filiere' => 'developement digitale', 'notes' => ['php' => 16, 'js' => 14, 'sql' => 15],];
 
+echo $stagiaire['prenom'] . " " . strtoupper($stagiaire['nom']);
+echo ", " . $stagiaire['age'] . " ans";
+echo ", filière : " . $stagiaire['filiere'] . "\n";
 
-echo "LECTURE ET PARCOURS \n";
-echo "Premiere note : " . $notes[0] . "\n";
-echo "Derniere note : " . $notes[array_key_last($notes)] . "\n";
-echo "Nombre de notes : " . count($notes) . "\n";
-echo "\nParcours avec FOR :\n";
+$stagiaire['ville'] = 'Casablanca';
+$stagiaire['age'] = 22;
+print_r($stagiaire);
 
-for ($i = 0; $i < count($notes); $i++) {
-    echo "Note n°" . ($i + 1) . " : " . $notes[$i] . "\n";
+echo "email :" . ($stagiaire['email'] ?? 'non renseigné') . "\n";
+$stagiaire['telephone'] = null;
+
+echo "isset :" ;
+var_dump(isset($stagiaire['telephone']));
+
+echo "array_key_exists :";
+var_dump(array_key_exists('telephone', $stagiaire));
+
+unset($stagiaire['ville']);
+
+echo "note php :" . $stagiaire['notes']['php'] . "\n";
+$moyenne = array_sum($stagiaire['notes']) / count($stagiaire['notes']);
+
+echo "moyenne : " . number_format($moyenne, 2) . "\n";
+
+foreach ($stagiaire['notes'] as $matiere => $note) {
+    echo "$matiere : $note/20\n";
 }
 
-echo "\nParcours avec FOREACH :\n";
+echo "panier\n";
 
-foreach ($notes as $i => $note) {
-    echo "Note n°" . ($i + 1) . " : " . $note . "\n";
-}
+$panier = [
+    'clavier' => 250,
+    'souris' => 90,
+    'ecran' => 1400,
+    'casque' => 320,
+];
 
-echo "\nListe des prenoms :\n";
-foreach ($prenoms as $i => $prenom) {
-    echo ($i + 1) . ". " . $prenom . "\n";
-}
+$total = array_sum($panier);
+$nombresarticles = count($panier);
 
-// ajouter retirer inserer
+echo "total du panier : $total MAD\n";
+echo "nombre d'articles : $nombresarticles\n";
 
-echo "\n\ MODIFICATION \n";
+$prixmax = max($panier);
+$prixmin = min($panier);
 
-// 1. 
+$produitcher = array_search($prixmax, $panier);
+$produitmoincher = array_search($prixmin, $panier);
+echo "produit le plus cher : $produitcher ($prixmax MAD)\n";
+echo "produit le moins cher : $produitmoincher ($prixmin MAD)\n";
 
-$notes1 = $notes;
-
-$notes1[] = 16;
-
-echo "Ajout avec [] :\n";
-print_r($notes1);
-
-$notes2 = $notes;
-
-array_push($notes2, 16);
-echo "Ajout avec array_push :\n";
-print_r($notes2);
-
-// 2. 
-
-$notesModifiees = $notes;
-
-array_unshift($notesModifiees, 10);
-echo "Ajout de 10 au debut :\n";
-print_r($notesModifiees);
-
-// 3. 
-
-$derniereNote = array_pop($notesModifiees);
-
-echo "Note retiree a la fin : " . $derniereNote . "\n";
-
-$premiereNote = array_shift($notesModifiees);
-
-echo "Note retiree au debut : " . $premiereNote . "\n";
-print_r($notesModifiees);
-
-// 4.
-
-array_splice($notesModifiees, 2, 0, [13]);
-
-echo "Apres insertion de 13 :\n";
-print_r($notesModifiees);
-
-// 5.
-
-unset($notesModifiees[1]);
-echo "Apres unset (indices avec un trou) :\n";
-print_r($notesModifiees);
-
-$notesModifiees = array_values($notesModifiees);
-
-echo "Apres array_values :\n";
-print_r($notesModifiees);
-
-// recherche 
-
-echo "\nRECHERCHE \n";
-
-// 1.
-
-if (in_array(17, $notes, true)) {
-    echo "La note 17 existe.\n";
-} else {
-    echo "La note 17 n'existe pas.\n";
-}
-
-// 2. 
-
-$indice = array_search(9, $notes, true);
-
-if ($indice !== false) {
-    echo "La note 9 existe a l'indice : " . $indice . "\n";
-} else {
-    echo "La note 9 n'existe pas.\n";
-}
-
-// 3. 
-
-if (in_array("Omar", $prenoms, true)) {
-    echo "Omar figure dans la liste.\n";
-} else {
-    echo "Omar ne figure pas dans la liste.\n";
-}
-
-//stats
-
-echo "\nSTATISTIQUES \n";
-
-$somme = array_sum($notes);
-$moyenne = $somme / count($notes);
-$minimum = min($notes);
-$maximum = max($notes);
-
-echo "Somme : " . $somme . "\n";
-echo "Moyenne : " . number_format($moyenne, 2) . "\n";
-echo "Note minimale : " . $minimum . "\n";
-echo "Note maximale : " . $maximum . "\n";
-
-// 2. 
-
-$nombreAdmis = 0;
-
-foreach ($notes as $note) {
-    if ($note >= 10) {
-        $nombreAdmis++;
-    }
-}
-echo "Nombre d'admis avec boucle : " . $nombreAdmis . "\n";
-
-$notesAdmis = array_filter(
-    $notes,
-    fn($note) => $note >= 10
+$panierremise = array_map(
+    fn($prix) => $prix * 0.90,
+    $panier
 );
-echo "Nombre d'admis avec array_filter : " . count($notesAdmis) . "\n";
 
-// 3. 
-
-$pourcentage = ($nombreAdmis / count($notes)) * 100;
-
-echo "Pourcentage de reussite : " .
-    number_format($pourcentage, 2) . "%\n";
-
-// 4. 
-$notesTriees = $notes;
-
-sort($notesTriees);
-
-$nombreNotes = count($notesTriees);
-$milieu = intdiv($nombreNotes, 2);
-
-if ($nombreNotes % 2 !== 0) {
-    $mediane = $notesTriees[$milieu];
-} else {
-    $mediane = (
-        $notesTriees[$milieu - 1] +
-        $notesTriees[$milieu]
-    ) / 2;
+echo "panier après remise :\n";
+foreach ($panierremise as $produit => $prix) {
+    echo "$produit : $prix MAD\n";
 }
-echo "Mediane : " . $mediane . "\n";
 
-// tri
-echo "\n TRI \n";
+$panierfiltre = array_filter(
+    $panier,
+    fn($prix) => $prix > 200
+);
 
-// 1. tri croissant 
+echo "article a plus de 200 MAD :\n";
+print_r($panierfiltre);
 
-$croissant = $notes;
+$parnom = $panier;
+ksort($parnom);
+echo($croissant);
 
-sort($croissant);
-echo "Ordre croissant :\n";
+echo "tri par nom :\n";
+print_r($parnom);
+
+$croissant = $panier;
+asort($croissant);
+
+echo "tri par prix croissant :\n";
 print_r($croissant);
 
-// tri decroissant
+$decroissant = $panier;
+arsort($decroissant);
 
-$decroissant = $notes;
+$quantite = [
+    'clavier' => 1,
+    'souris' => 1,
+    'ecran' => 1,
+    'casque' => 1,
+];
 
-rsort($decroissant);
-echo "Ordre decroissant :\n";
-print_r($decroissant);
+$nouveauproduit = 'webcam' ;
 
-
-// 2. 3 meilleures notes
-
-$meilleuresNotes = $notes;
-rsort($meilleuresNotes);
-
-$top3 = array_slice($meilleuresNotes, 0, 3);
-
-echo "Les 3 meilleures notes :\n";
-print_r($top3);
-
-// 3. Prenoms ordre alphabetique
-
-$prenomsTries = $prenoms;
-
-sort($prenomsTries);
-echo "Prenoms tries :\n";
-print_r($prenomsTries);
-
-// Prenoms inverses
-
-$prenomsInverses = array_reverse($prenomsTries);
-
-echo "Prenoms inverses :\n";
-print_r($prenomsInverses);
-
-// array_map, array_filter, array_reduce
-
-echo "\nTRANSFORMATIONS \n";
-// 1. 
-
-$notesBonus = array_map(
-    fn($note) => min(20, $note + 1),
-    $notes
-);
-echo "Notes avec bonus :\n";
-print_r($notesBonus);
-
-// 2. Tableau des admis
-
-$admis = array_values(
-    array_filter(
-        $notes,
-        fn($note) => $note >= 10
-    )
-);
-echo "Notes des admis :\n";
-print_r($admis);
-
-// 3. calculer la somme 
-
-$total = array_reduce(
-    $notes,
-    fn($cumul, $note) => $cumul + $note,
-    0
-);
-echo "Total avec array_reduce : " . $total . "\n";
-
-
-// 4. prenoms en majuscules
-
-$prenomsMajuscules = array_map("strtoupper", $prenoms);
-
-echo "Prenoms en majuscules :\n";
-print_r($prenomsMajuscules);
-
-
-// 5. mentions
-
-$mentions = array_map(
-    function ($note) {
-        if ($note < 10) {
-            $mention = "Ajourné";
-        } elseif ($note < 14) {
-            $mention = "Passable";
-        } elseif ($note < 16) {
-            $mention = "Assez bien";
-        } else {
-            $mention = "Bien";
-        }
-        return $note . " → " . $mention;
-    },
-    $notes
-);
-
-echo "Mentions :\n";
-print_r($mentions);
-
-//chaines fusion...
-
-echo "\n========== ETAPE 7 : CHAINES ET ENSEMBLES ==========\n";
-
-// 1. 
-
-echo "Prenoms : " . implode(", ", $prenoms) . "\n";
-
-
-// 2.
-
-$chaine = "php,js,sql,php,html,js";
-$langages = explode(",", $chaine);
-$langagesUniques = array_values(array_unique($langages));
-
-echo "Langages sans doublons :\n";
-print_r($langagesUniques);
-
-
-// 3. 
-
-$a1 = ["php", "sql"];
-$b1 = ["js", "sql"];
-
-$fusion = array_merge($a1, $b1);
-$fusion = array_values(array_unique($fusion));
-
-echo "Fusion dedoublonnee :\n";
-print_r($fusion);
-
-
-// 4. 
-
-$a = ["php", "js", "sql"];
-$b = ["js", "html", "sql"];
-
-$communs = array_intersect($a, $b);
-$difference = array_diff($a, $b);
-echo "Elements communs :\n";
-print_r($communs);
-echo "Elements uniquement dans A :\n";
-print_r($difference);
-
-
-// 5.
-
-$nombres = range(1, 10);
-$paquets = array_chunk($nombres, 3);
-echo "Paquets de 3 :\n";
-print_r($paquets);
-
-
-// 6. Fonction moyenne
-
-function moyenne(array $notes): float
-{
-    if (count($notes) === 0) {
-        return 0.0;
-    }
-    return array_sum($notes) / count($notes);
+if (!array_key_exists($nouveauproduit, $panier)) {
+    $panier[$nouveauproduit] = 180;
+    $quantites[$nouveauproduit] = 1;
+}else{
+    $quantites[$nouveauproduit]++;
 }
 
-// 7. Fonction mediane
+echo "panier après ajout :\n";
+print_r($panier);
 
-function mediane(array $notes): float
-{
-    if (count($notes) === 0) {
-        return 0.0;
-    }
-    sort($notes);
-    $nombre = count($notes);
-    $milieu = intdiv($nombre, 2);
-    if ($nombre % 2 !== 0) {
-        return (float) $notes[$milieu];
-    }
-    return (
-        $notes[$milieu - 1] +
-        $notes[$milieu]
-    ) / 2;
+echo "panier detaillé :\n";
+foreach ($panier as $produit => $prix) {
+    printf("%-10s %8.2f MAD\n", $produit, $prix);
 }
 
+echo "classe\n";
+$stagiaire = [
+    [
+    'nom' => 'Alami',
+    'filiere' => 'developpement ',
+    'notes' => [16, 14, 15],
+],
+[
+    'nom' => 'Bennani',
+    'filiere' => 'infrastructure',
+    'notes' => [18, 17, 19]
+],
+[
+    'nom' => 'Daoudi',
+    'filiere' => 'infrastructure',
+    'notes' => [9, 10, 8]
+],
+];
 
-// 8. Fonction admis
+foreach ($stagiaire as &$s) {
+    $s['moyenne'] = array_sum($s['notes']) / count($s['notes']);
+}
 
-function admis(array $notes, float $seuil = 10): array
-{
-    $resultat = array_filter(
-        $notes,
-        fn($note) => $note >= $seuil
+unset($s);
+
+$nom = array_column($stagiaire, 'nom');
+
+echo "liste des noms :\n";
+print_r($nom);
+
+$moyennes = array_column($stagiaire, 'moyenne', 'nom');
+
+echo "Nom => moyenne :\n";
+print_r($moyennes);
+
+usort(
+    $stagiaire,
+    fn($a, $b) => $b['moyenne'] <=> $a['moyenne']
+);
+
+echo "\nClassement :\n";
+
+foreach ($stagiaires as $i => $s) {
+    printf(
+        "%d. %-10s (%.2f)\n",
+        $i + 1,
+        $s['nom'],
+        $s['moyenne']
     );
-    return array_values($resultat);
+}
+
+$meilleur = $stagiaires[0];
+
+echo "\nMeilleur stagiaire : " . $meilleur['nom'] . "\n";
+
+$moyennesClasse = array_column($stagiaires, 'moyenne');
+
+$moyenneGenerale = array_sum($moyennesClasse) / count($moyennesClasse);
+
+echo "Moyenne générale : " . number_format($moyenneGenerale, 2) . "\n";
+
+$admis = array_filter(
+    $stagiaires,
+    fn($s) => $s['moyenne'] >= 10
+);
+
+echo "\nStagiaires admis :\n";
+
+foreach ($admis as $s) {
+    echo $s['nom'] . " : " . $s['moyenne'] . "\n";
 }
 
 
-// 9. Fonction meilleures
+$parFiliere = [];
 
-function meilleures(array $notes, int $n = 3): array
-{
-    rsort($notes);
-    return array_slice($notes, 0, max(0, $n));
-}
+foreach ($stagiaires as $s) {
+    $filiere = $s['filiere'];
 
-
-// 10. Fonction histogramme
-
-function histogramme(array $notes): void
-{
-    if (count($notes) === 0) {
-        echo "Aucune note disponible.\n";
-        return;
+    if (!isset($parFiliere[$filiere])) {
+        $parFiliere[$filiere] = [];
     }
-    foreach ($notes as $note) {
-        $etoiles = str_repeat("*", max(0, (int) $note));
-        echo $note . " : " . $etoiles . "\n";
+
+    $parFiliere[$filiere][] = $s;
+}
+
+echo "\nRegroupement par filière :\n";
+
+foreach ($parFiliere as $filiere => $liste) {
+
+    $moyennesFiliere = array_column($liste, 'moyenne');
+
+    $moyenneFiliere = array_sum($moyennesFiliere) / count($liste);
+
+    echo "\nFilière : $filiere\n";
+    echo "Effectif : " . count($liste) . "\n";
+    echo "Moyenne : " . number_format($moyenneFiliere, 2) . "\n";
+}
+
+
+function mention(float $moyenne): string
+{
+    if ($moyenne < 10) {
+        return "Ajourné";
+    } elseif ($moyenne < 12) {
+        return "Passable";
+    } elseif ($moyenne < 14) {
+        return "Assez bien";
+    } elseif ($moyenne < 16) {
+        return "Bien";
+    } else {
+        return "Très bien";
+    }
+}
+
+foreach ($stagiaires as &$s) {
+    $s['mention'] = mention($s['moyenne']);
+}
+
+unset($s);
+
+echo "\nStagiaires avec leurs mentions :\n";
+print_r($stagiaires);
+
+
+
+echo "\ngestion de stock\n";
+
+$stock = [
+    'P001' => [
+        'designation' => 'Clavier',
+        'prix' => 250.0,
+        'quantite' => 12
+    ],
+    'P002' => [
+        'designation' => 'Souris',
+        'prix' => 90.0,
+        'quantite' => 40
+    ],
+    'P003' => [
+        'designation' => 'Ecran',
+        'prix' => 1400.0,
+        'quantite' => 5
+    ],
+];
+
+
+function ajouterProduit(
+    array &$stock,
+    string $ref,
+    string $designation,
+    float $prix,
+    int $qte
+): bool {
+
+    if (array_key_exists($ref, $stock)) {
+        return false;
+    }
+
+    if ($prix < 0 || $qte < 0) {
+        return false;
+    }
+
+    $stock[$ref] = [
+        'designation' => $designation,
+        'prix' => $prix,
+        'quantite' => $qte
+    ];
+
+    return true;
+}
+
+
+function retirerStock(
+    array &$stock,
+    string $ref,
+    int $qte
+): bool {
+
+    if (!array_key_exists($ref, $stock)) {
+        return false;
+    }
+
+    if ($qte < 0 || $stock[$ref]['quantite'] < $qte) {
+        return false;
+    }
+
+    $stock[$ref]['quantite'] -= $qte;
+
+    return true;
+}
+
+
+function valeurTotale(array $stock): float
+{
+    $total = 0;
+
+    foreach ($stock as $produit) {
+        $total += $produit['prix'] * $produit['quantite'];
+    }
+
+    return $total;
+}
+
+
+function produitsEnRupture(
+    array $stock,
+    int $seuil = 10
+): array {
+
+    $resultat = [];
+
+    foreach ($stock as $ref => $produit) {
+        if ($produit['quantite'] < $seuil) {
+            $resultat[$ref] = $produit;
+        }
+    }
+
+    return $resultat;
+}
+
+function afficherStock(array $stock): void
+{
+    echo "\n reference designation prix qte \n";
+
+    foreach ($stock as $ref => $produit) {
+        printf(
+            "%-10s %-16s %8.2f MAD %5d\n",
+            $ref,
+            $produit['designation'],
+            $produit['prix'],
+            $produit['quantite']
+        );
     }
 }
 
 
-//test
-echo "\n TEST DES FONCTIONS \n";
+if (ajouterProduit($stock, 'P004', 'Webcam', 180.0, 15)) {
+    echo "\nProduit ajouté avec succès.\n";
+} else {
+    echo "\nImpossible d'ajouter le produit.\n";
+}
 
-echo "Moyenne : " . moyenne($notes) . "\n";
+if (!ajouterProduit($stock, 'P001', 'Clavier', 250.0, 10)) {
+    echo "Cette référence existe déjà.\n";
+}
 
-echo "Mediane : " . mediane($notes) . "\n";
+if (retirerStock($stock, 'P001', 3)) {
+    echo "3 claviers retirés.\n";
+}
 
-echo "Admis : ";
-print_r(admis($notes));
+if (!retirerStock($stock, 'P003', 100)) {
+    echo "Impossible de retirer 100 écrans : quantité insuffisante.\n";
+}
 
-echo "Meilleures notes : ";
-print_r(meilleures($notes));
+afficherStock($stock);
 
-echo "\nHistogramme :\n";
-histogramme($notes);
+echo "\nValeur totale du stock : ";
+echo number_format(valeurTotale($stock), 2) . " MAD\n";
 
-echo "\n TEST TABLEAU VIDE \n";
+echo "\nProduits en rupture (moins de 10 unités) :\n";
 
-$tableauVide = [];
+$rupture = produitsEnRupture($stock);
 
-echo "Moyenne : " . moyenne($tableauVide) . "\n";
+print_r($rupture);
 
-echo "Mediane : " . mediane($tableauVide) . "\n";
-
-echo "Admis : ";
-print_r(admis($tableauVide));
-
-echo "Meilleures notes : ";
-print_r(meilleures($tableauVide));
-
-echo "Histogramme :\n";
-histogramme($tableauVide);
+?>
