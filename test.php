@@ -3,8 +3,8 @@
 
 require_once 'comptebancaire.php';
 
-$compte1 = new comptebancaire("123456", "ichrak", 2000);
-$compte2 = new comptebancaire("789012", "ayoub", 1000);
+$compte1 = new comptebancaire("12345", "Hiba", 2000);
+$compte2 = new comptebancaire("6789012", "ayoub", 1000);
 
 echo $compte1 . "<br>";
 echo $compte2 . "<br>";
